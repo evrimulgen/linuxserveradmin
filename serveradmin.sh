@@ -9,10 +9,15 @@ echo "1. Add new domain"
 echo "2. Activate domain"
 echo "3. Deactivate domain"
 echo "4. Add subdomain"
-echo "5. Test apache configration"
-echo "6. Apply Apache + PHP-FPM configration"
-echo "7. Check PHP-FPM status"
-echo "8. Delete user"
+echo "5. Add SLL Certificate"
+echo "6. Test apache configration"
+echo "7. Apply Apache + PHP-FPM configration"
+echo "8. Check PHP-FPM status"
+echo "9. Delete user"
+echo "10. Create CA Cert"
+echo "11. Create SSL Certificate Key"
+echo "12. Create SSL Certificate Request File"
+echo "13. Create SSL Certificate"
 echo "Choose an action = "
 
 read USERACTION
@@ -181,9 +186,94 @@ _EOFVHOSTFILE_
 	echo "Subdomain created."
 }
 
+function createSSLDomain
+{
+	local USER_HOME_DIR="/home/${3}"
+	
+	if [ ! -d "${USER_HOME_DIR}/" ]; then
+		echo "Error - home directory not found for this user"
+	fi
+	
+	echo "Creating apache virtual host ... "
+	
+	local VIRTUALHOSTFILE="${APACHE_PATH}sites-available/ssl-${1}"
+	
+	cat > $VIRTUALHOSTFILE <<_EOFVHOSTFILE_
+
+<VirtualHost ${4}:443>
+        ServerAdmin $SERVER_ADMIN
+        ServerName ${1}
+        ServerAlias ${2}
+        DocumentRoot ${USER_HOME_DIR}/Public_html
+
+        <Directory />
+                Options -Indexes -FollowSymLinks -MultiViews
+                AllowOverride All
+                Order allow,deny
+                Require all granted
+                Allow from all
+        </Directory>
+
+        DirectoryIndex index.html index.htm index.php
+
+        <Directory "${USER_HOME_DIR}/Public_html">
+                Options +Indexes +FollowSymLinks
+        </Directory>
+
+LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" combined
+CustomLog ${USER_HOME_DIR}/Logs/ssl-access.log combined
+ErrorLog ${USER_HOME_DIR}/Logs/ssl-error.log
+
+
+        <FilesMatch "\.(ico|jpg|jpeg|png|gif|js|css|swf|eot|swg|ttf|woff)$">
+                ExpiresActive On
+                ExpiresDefault "access plus 14 days"
+        </FilesMatch>
+		
+		SSLEngine on
+		SSLProtocol all
+		SSLCertificateFile ${USER_HOME_DIR}/SSL/${5}
+        SSLCertificateKeyFile ${USER_HOME_DIR}/SSL/${6}
+        SSLCACertificateFile ${USER_HOME_DIR}/SSL/${7}
+
+</VirtualHost>
+
+_EOFVHOSTFILE_
+	
+	echo "SSL Domain created. Administration domain name is: "
+	echo ssl-${1}
+}
+
 function deleteUser
 {
 	userdel -r $1
+}
+
+function createCACert
+{
+	openssl genrsa -out ca.key 4096
+	openssl req -new -x509 -days ${1} -key ca.key -out ca.crt
+	echo "CA Certificate created."
+	echo "File Names: ca.key ca.crt"
+}
+
+function createSSLKey
+{
+	openssl genrsa -out ia.key 4096
+	echo "SSL Key created. File Name: ia.key"
+}
+
+function createSSLCSR
+{
+	openssl req -new -key ia.key -out ia.csr
+	echo "SSL Certificate Request created. File Name: ia.csr"
+}
+
+function createSSLCertificate
+{
+	openssl x509 -req -days ${1} -in ia.csr -CA ca.crt -CAkey ca.key -set_serial 01 -out ia.crt
+	openssl pkcs12 -export -out ia.p12 -inkey ia.key -in ia.crt -chain -CAfile ca.crt
+	echo "SSL Certificate created. File Name: ia.crt"
 }
 
 case "$USERACTION" in
@@ -223,23 +313,60 @@ case "$USERACTION" in
 	echo ""
 	createSubDomain $DOMAIN_NAME $DOMAIN_ALIAS $DOMAIN_USER $DOMAIN_IP
 	;;
-5)	echo "Testing apache configration ..."
+5)	echo "Enter domain name:"
+	read DOMAIN_NAME
+	echo ""
+	echo "Enter domain alias:"
+	read DOMAIN_ALIAS
+	echo ""
+	echo "Enter domain user name:"
+	read DOMAIN_USER
+	echo ""
+	echo "Enter domain ip address:"
+	read DOMAIN_IP
+	echo ""
+	echo "Enter SSL certificate file name:"
+	read SSL_FILENAME
+	echo ""
+	echo "Enter SSL key file name:"
+	read SSL_KEYNAME
+	echo ""
+	echo "Enter SSL CA certificate file name:"
+	read SSL_CAFILENAME
+	echo ""
+	createSSLDomain $DOMAIN_NAME $DOMAIN_ALIAS $DOMAIN_USER $DOMAIN_IP $SSL_FILENAME $SSL_KEYNAME $SSL_CAFILENAME
+	;;
+6)	echo "Testing apache configration ..."
 	/usr/sbin/apache2ctl -t
 	;;
-6)	echo "Applying apache - PHP-FPM configration ..."
+7)	echo "Applying apache - PHP-FPM configration ..."
 	service apache2 restart
 	service php-fpm restart
 	;;
-7)	echo "Checkişng PHP-FPM status ..."
+8)	echo "Checkişng PHP-FPM status ..."
 	service php-fpm status
 	;;
-8)	echo  "Enter user name: "
+9)	echo  "Enter user name: "
 	read USERNAME
 	echo ""
 	deleteUser $USERNAME
 	;;
+10)	echo  "Certificate validity day: "
+	read DAYS
+	echo ""
+	createCACert $DAYS
+	;;
+11)	echo ""
+	createSSLKey
+	;;
+12)	echo ""
+	createSSLCSR
+	;;
+13)	echo  "Certificate validity day: "
+	read DAYS
+	echo ""
+	createSSLCertificate $DAYS
+	;;
 *)	echo "Invalid operation!"
 	;;
 esac
-
-
