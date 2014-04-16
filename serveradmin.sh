@@ -247,6 +247,7 @@ _EOFVHOSTFILE_
 function deleteUser
 {
 	userdel -r $1
+	groupdel $1
 }
 
 function createCACert
