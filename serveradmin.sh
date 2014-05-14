@@ -83,10 +83,29 @@ CustomLog ${USER_HOME_DIR}/Logs/access.log combined
 ErrorLog ${USER_HOME_DIR}/Logs/error.log
 
 
-        <FilesMatch "\.(ico|jpg|jpeg|png|gif|js|css|swf|eot|swg|ttf|woff)$">
-                ExpiresActive On
-                ExpiresDefault "access plus 14 days"
+		<FilesMatch "\.(ico|jpg|jpeg|png|gif|js|css|swf|eot|svg|ttf|woff|webm|ogv|ogg|mp3|mp4)$">
+			ExpiresActive On
+			ExpiresDefault "access plus 14 days"
         </FilesMatch>
+		
+		#<Directory "${USER_HOME_DIR}/cgi-bin">
+			#Options +FollowSymLinks +ExecCGI
+			#AddHandler cgi-script .cgi .py
+		#</Directory>
+
+		#ProxyPass /media !
+		#Alias /media ${USER_HOME_DIR}/Public_html/media
+		#ProxyPass /content !
+		#Alias /content ${USER_HOME_DIR}/Public_html/content
+		#ProxyPass /server-admin !
+		#Alias /server-admin ${USER_HOME_DIR}/cgi-bin/serverAdmin.py
+		#ProxyPass /favicon.ico !
+		#Alias /favicon.ico ${USER_HOME_DIR}/Public_html/content/site/favicon.ico
+		#ProxyPass /robots.txt !
+		#Alias /robots.txt ${USER_HOME_DIR}/Public_html/content/site/robots.txt
+		
+		#ProxyPass / http://127.0.0.1:30000/
+		#ProxyPassReverse / http://127.0.0.1:30000/
 </VirtualHost>
 
 _EOFVHOSTFILE_
@@ -175,10 +194,29 @@ CustomLog ${USER_HOME_DIR}/${1}/Logs/access.log combined
 ErrorLog ${USER_HOME_DIR}/${1}/Logs/error.log
 
 
-        <FilesMatch "\.(ico|jpg|jpeg|png|gif|js|css|swf|eot|swg|ttf|woff)$">
-                ExpiresActive On
-                ExpiresDefault "access plus 14 days"
+		<FilesMatch "\.(ico|jpg|jpeg|png|gif|js|css|swf|eot|svg|ttf|woff|webm|ogv|ogg|mp3|mp4)$">
+			ExpiresActive On
+			ExpiresDefault "access plus 14 days"
         </FilesMatch>
+		
+		#<Directory "${USER_HOME_DIR}/${1}/cgi-bin">
+			#Options +FollowSymLinks +ExecCGI
+			#AddHandler cgi-script .cgi .py
+		#</Directory>
+
+		#ProxyPass /media !
+		#Alias /media ${USER_HOME_DIR}/${1}/Public_html/media
+		#ProxyPass /content !
+		#Alias /content ${USER_HOME_DIR}/${1}/Public_html/content
+		#ProxyPass /server-admin !
+		#Alias /server-admin ${USER_HOME_DIR}/${1}/cgi-bin/serverAdmin.py
+		#ProxyPass /favicon.ico !
+		#Alias /favicon.ico ${USER_HOME_DIR}/${1}/Public_html/content/site/favicon.ico
+		#ProxyPass /robots.txt !
+		#Alias /robots.txt ${USER_HOME_DIR}/${1}/Public_html/content/site/robots.txt
+		
+		#ProxyPass / http://127.0.0.1:30000/
+		#ProxyPassReverse / http://127.0.0.1:30000/
 </VirtualHost>
 
 _EOFVHOSTFILE_
@@ -225,7 +263,7 @@ CustomLog ${USER_HOME_DIR}/Logs/ssl-access.log combined
 ErrorLog ${USER_HOME_DIR}/Logs/ssl-error.log
 
 
-        <FilesMatch "\.(ico|jpg|jpeg|png|gif|js|css|swf|eot|swg|ttf|woff)$">
+        <FilesMatch "\.(ico|jpg|jpeg|png|gif|js|css|swf|eot|svg|ttf|woff|webm|ogv|ogg|mp3|mp4)$">
                 ExpiresActive On
                 ExpiresDefault "access plus 14 days"
         </FilesMatch>
