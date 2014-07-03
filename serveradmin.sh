@@ -3,7 +3,7 @@
 # ilker Ozcan
 
 APACHE_PATH="/etc/apache2/"
-SERVER_ADMIN="info@projecalide.com"
+SERVER_ADMIN="iletisim@ilkerozcan.com.tr"
 
 echo "1. Add new domain"
 echo "2. Activate domain"
