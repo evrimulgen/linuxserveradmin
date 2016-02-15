@@ -1,0 +1,5 @@
+user = mysqlmailusername
+password = mysqlmailuserpassword
+hosts = mysqlhostname
+dbname = servermail
+query = SELECT destination FROM virtual_aliases WHERE source='%s'

@@ -1,0 +1,23 @@
+# START PPTPD RULES
+# NAT table rules
+*nat
+:POSTROUTING ACCEPT [0:0]
+# Allow traffic from OpenVPN client to eth0
+-A POSTROUTING -s 10.99.99.0/24 -o eth0 -j MASQUERADE
+-A POSTROUTING -o ppp0 -j MASQUERADE
+
+COMMIT
+# END PPTPD RULES
+
+
+# Don't delete these required lines, otherwise there will be errors
+
+
+...
+
+-A ufw-before-input -s 10.99.99.0/24 -i ppp0 -j ACCEPT
+-A ufw-before-forward -i eth0 -j ACCEPT
+-A ufw-before-input -p 47 -j ACCEPT
+-A ufw-before-output -p 47 -j ACCEPT
+
+# drop INVALID packets (logs these in loglevel medium and higher)

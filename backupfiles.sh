@@ -1,5 +1,5 @@
 #! /bin/bash
-# Linux Server Backup Tool
+# Linux Server Git Backup Tool
 # ilker Ozcan
 
 # git init --bare (for remote git)
@@ -9,12 +9,12 @@
 # *.log
 # administrator/Backup
 
-# git remote add cosmos /path/to/usbstick/repo
+# git remote add origin /path/to/usbstick/repo
 # sudo git remote -v
-# git commit -m 'limbo server git backup'
+# git commit -m 'server git backup'
 # git fetch usb --all (for recover)
 
-mount -t cifs -o username=***,password=**** //****/Backups /mnt/Backups/
+# mount -t cifs -o username=***,password=**** //****/Backups /mnt/Backups/
 
 cd /home
 

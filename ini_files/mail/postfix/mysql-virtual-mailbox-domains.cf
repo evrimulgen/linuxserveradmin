@@ -1,0 +1,6 @@
+user = mysqlmailusername
+password = mysqlmailuserpassword
+hosts = mysqlhostname
+dbname = servermail
+# query = SELECT 1 FROM virtual_domains WHERE name='%s'
+query = SELECT name AS virtual FROM virtual_domains WHERE name='%s'

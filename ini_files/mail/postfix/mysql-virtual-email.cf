@@ -1,0 +1,5 @@
+user = mysqlmailusername
+password = mysqlmailuserpassword
+hosts = mysqlhostname
+dbname = servermail
+query = SELECT email FROM virtual_users WHERE email='%s'
