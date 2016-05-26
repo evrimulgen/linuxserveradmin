@@ -1,2 +1,10 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea
+/bin
+/IOServerManagerUtils/build
+/IOServerManagerUtils/autom4te.cache
+/IOServerManagerUtils/src/ServerManagerUtils_Config.h
+/IOServerManagerUtils/src/.deps
+*.o
+*.Po
+Makefile

@@ -126,17 +126,17 @@ if test "$CONFIGURE" = "yes"; then
 	make --directory=${SOURCEDIR} install
 
 	if test "$UPDATE_BINARIES" = "yes"; then
-	ln -s ${PREFIX}/bin/php /usr/local/bin
-	ln -s ${PREFIX}/bin/php-cgi /usr/local/bin
-	ln -s ${PREFIX}/bin/php-config /usr/local/bin
-	ln -s ${PREFIX}/bin/phpize /usr/local/bin
-	ln -s ${PREFIX}/bin/phpdbg /usr/local/bin
-	ln -s ${PREFIX}/bin/phar.phar /usr/local/bin/phar
+		ln -s ${PREFIX}/bin/php /usr/local/bin
+		ln -s ${PREFIX}/bin/php-cgi /usr/local/bin
+		ln -s ${PREFIX}/bin/php-config /usr/local/bin
+		ln -s ${PREFIX}/bin/phpize /usr/local/bin
+		ln -s ${PREFIX}/bin/phpdbg /usr/local/bin
+		ln -s ${PREFIX}/bin/phar.phar /usr/local/bin/phar
 	fi
 
 	if test "$INSTALL_FPM_SERVICE" = "yes"; then
-	cp ${SOURCEDIR}/sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm
-	chmod +x /etc/init.d/php-fpm
-	update-rc.d php-fpm defaults
+		cp ${SOURCEDIR}/sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm
+		chmod +x /etc/init.d/php-fpm
+		update-rc.d php-fpm defaults
 	fi
 fi

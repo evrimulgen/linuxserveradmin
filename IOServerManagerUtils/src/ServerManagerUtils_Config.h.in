@@ -1,0 +1,18 @@
+#ifndef SERVER_MANAGER_PARAMETERS_H_
+#define SERVER_MANAGER_PARAMETERS_H_
+
+#define SERVER_MANAGER_UTILS_CC "@CC@"
+
+#define SERVER_MANAGER_UTILS_LDFLAGS "@SERVER_MANAGER_UTILS_LDFLAGS@"
+
+#define SERVER_MANAGER_UTILS_PREFIX "@prefix@"
+
+#define SERVER_MANAGER_UTILS_CC_OS "@host_os@"
+
+#define SERVER_MANAGER_UTILS_CC_ARC "@host_cpu@"
+
+#define SERVER_MANAGER_UTILS_CC_VENDOR "@host_vendor@"
+
+#define SERVER_MANAGER_UTILS_ARC @servermanager_utils_build_architecture@
+
+#endif

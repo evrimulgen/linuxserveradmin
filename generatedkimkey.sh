@@ -34,5 +34,5 @@ if [ -z ${NAME+x} ]; then
 fi
 
 openssl genrsa -out ${EXPORT_PATH}${NAME}.key 1024
-openssl rsa -in ${EXPORT_PATH}${NAME}.key -pubout -out${EXPORT_PATH}${NAME}.public.key
+openssl rsa -in ${EXPORT_PATH}${NAME}.key -pubout -out ${EXPORT_PATH}${NAME}.public.key
 sudo chmod 600 ${EXPORT_PATH}${NAME}.key

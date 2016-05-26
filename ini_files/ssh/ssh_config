@@ -51,3 +51,4 @@ ForwardX11Trusted yes
     HashKnownHosts yes
     GSSAPIAuthentication yes
  #   GSSAPIDelegateCredentials no
+ ServerAliveInterval 120
