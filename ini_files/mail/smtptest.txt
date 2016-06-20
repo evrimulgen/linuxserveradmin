@@ -1,0 +1,35 @@
+openssl s_client -connect smtp.domain.de:587 -starttls smtp
+
+HELO smtp.ilker.rocks
+
+// \0info@ilker.rocks\0password
+echo -ne "\0username\0password"|base64
+AUTH PLAIN AGluZm9AaWxrZXIucm9ja3MAYWcyYm16OThvaWR6NndmOA==
+
+mail from:<info@e-ticaretal.net>
+
+rcpt to:<iletisim@ilkerozcan.com.tr>
+
+rcpt to:<adnanilkerozcan@icloud.com>
+
+RCPT TO:<info@e-ticaretal.net>
+
+DATA
+
+From: =?UTF-8?B?xLBsa2VyIMOWemNhbg==?= <info@e-ticaretal.net>
+
+Subject: SMTP TEST 2
+
+To: =?UTF-8?B?xLBsa2VyIMOWemNhbg==?= <iletisim@ilkerozcan.com.tr>
+
+Spam test 2.
+
+.
+QUIT
+
+
+
+IMAP
+openssl s_client -connect imap.ilker.rocks:993 -starttls imap
+a1 LOGIN info@ilker.rocks ag2bmz98oidz6wf8
+a2 LOGOUT

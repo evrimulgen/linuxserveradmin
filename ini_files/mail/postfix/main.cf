@@ -18,9 +18,10 @@ append_dot_mydomain = no
 readme_directory = no
 
 # TLS parameters
-smtpd_use_tls=yes
+smtpd_use_tls = yes
 smtpd_enforce_tls = yes
-smtpd_tls_security_level = encrypt
+smtpd_tls_security_level = may
+#smtpd_tls_security_level = encrypt
 smtpd_tls_cert_file=/etc/ssl/hostmaster.domain.net.cer
 smtpd_tls_key_file=/etc/ssl/hostmaster.domain.net.key
 smtpd_tls_CApath=/etc/ssl/certs
@@ -29,8 +30,13 @@ smtpd_tls_received_header = yes
 smtpd_tls_session_cache_timeout = 600s
 smtpd_tls_session_cache_database = btree:/var/lib/postfix/smtpd_tls_session_cache
 smtpd_tls_auth_only = yes
+#if public access problem
+#smtpd_tls_auth_only = no
 smtpd_tls_mandatory_protocols = TLSv1, SSLv3
 smtpd_tls_protocols = TLSv1, SSLv3
+#or fail use
+#smtpd_tls_mandatory_protocols = !SSLv2,!SSLv3,!TLSv1,!TLSv1.1
+#smtpd_tls_protocols=!SSLv2,!TLSv1,!TLSv1.1,!SSLv3
 smtpd_tls_loglevel = 1
 
 tls_random_source = dev:/dev/urandom
@@ -47,22 +53,33 @@ smtp_tls_session_cache_timeout = 600s
 smtp_tls_session_cache_database = btree:/var/lib/postfix/smtp_tls_session_cache
 smtp_tls_mandatory_protocols = TLSv1, SSLv3
 smtp_tls_protocols = TLSv1, SSLv3
+#or fail use
+#smtp_tls_mandatory_protocols = !SSLv2,!SSLv3,!TLSv1,!TLSv1.1
+#smtp_tls_protocols=!SSLv2,!TLSv1,!TLSv1.1,!SSLv3
 smtp_tls_loglevel = 1
 
+queue_directory = /var/spool/postfix
 smtpd_sasl_type = dovecot
 smtpd_sasl_path = private/auth
+# ?? if fail authentication
+#smptd_sasl_path = private/auth
 smtpd_sasl_auth_enable = yes
 smtpd_sasl_security_options = noanonymous
 broken_sasl_auth_clients = yes
 
 #smtpd_relay_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination
 smtpd_recipient_restrictions = permit_sasl_authenticated,permit_mynetworks,reject_unauth_destination
+#smtpd_recipient_restrictions = permit_sasl_authenticated,permit_mynetworks,defer_unauth_destination
+#smtpd_recipient_restrictions = permit_sasl_authenticated
 
 
 # See /usr/share/doc/postfix/TLS_README.gz in the postfix-doc package for
 # information on enabling SSL in the smtp client.
+#smtpd_delay_reject = yes
+#smtpd_client_restrictions = permit_sasl_authenticated, reject
 
-smtpd_relay_restrictions = permit_sasl_authenticated, permit_mynetworks
+smtpd_relay_restrictions = permit_sasl_authenticated,permit_mynetworks
+#smtpd_relay_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination
 myhostname = hostmaster.domain.net
 alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases

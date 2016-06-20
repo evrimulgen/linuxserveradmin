@@ -96,8 +96,11 @@ emailAddress = ${EMAIL}
 [ v3_ca ]
 subjectKeyIdentifier = hash
 authorityKeyIdentifier=keyid,issuer
-keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+keyUsage = digitalSignature, keyEncipherment
 CSREOF
+
+#[ v3_ca ]
+#keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
 
 echo "$CSR_OPTIONS" > "${PREFIX}ca_config"
 
@@ -115,12 +118,15 @@ commonName = ${COMMONNAME}
 emailAddress = ${EMAIL}
 
 [ v3_req ]
-basicConstraints = CA:FALSE
-keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+keyUsage = digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth, clientAuth
 subjectAltName = @alt_names
 
 [ alt_names ]
 CREOF
+#[ v3_req ]
+#basicConstraints = CA:FALSE
+#keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
 
 echo "$CERT_OPTIONS" > "${PREFIX}cert_config"
 

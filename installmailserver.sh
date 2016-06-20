@@ -283,9 +283,10 @@ BEGIN
 		from virtual_users
 		where email = varpMail and domain_id = vardDomainId;
 
-		if vardSourceExists > 0 then
-			select concat('User ', varpMail, ' exists!.') as status;
+		if vardSourceExists = 0 then
+			select concat('User ', varpMail, ' does not exists!.') as status;
 		else
+			# select CAST(ENCRYPT('gE4XKGKP', CONCAT('$6$', SUBSTRING(SHA(RAND()), -16))) as CHAR(1000) CHARACTER SET utf8);
 			update virtual_users set password = varpPassword
 			where domain_id = vardDomainId and email = varpMail;
 			select concat('User ', varpMail, ' password updated') as status;
